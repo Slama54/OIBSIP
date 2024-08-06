@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';    
-
+import userRoutes from './routes/user.route.js';
 const app = express();      
 
 // Connect to MongoDB       
@@ -22,3 +22,5 @@ app.use((err, req, res, next) => {
       message,
     });
   });
+
+  app.use('/api/user',userRoutes)
