@@ -1,8 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';    
 import userRoutes from './routes/user.route.js';
+import { signup } from './controllers/auth.controller.js';
 const app = express();      
-
+app.use(express.json())
 // Connect to MongoDB       
 
 mongoose.connect('mongodb://localhost:27017/pizza')
@@ -24,3 +25,4 @@ app.use((err, req, res, next) => {
   });
 
   app.use('/api/user',userRoutes)
+  app.use('/api/auth',signup)
