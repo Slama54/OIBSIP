@@ -1,14 +1,21 @@
 import express from 'express';
 import mongoose from 'mongoose';    
 import userRoutes from './routes/user.route.js';
-import { signup } from './controllers/auth.controller.js';
+import authRoutes from './routes/auth.route.js'
+import dotenv from 'dotenv';
 const app = express();      
 app.use(express.json())
+dotenv.config();
 // Connect to MongoDB       
 
-mongoose.connect('mongodb://localhost:27017/pizza')
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
+mongoose
+  .connect(process.env.MONGO)
+  .then(() => {
+    console.log('MongoDb is connected');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.listen(3000,()=>{
     console.log('Server started on port 3000');
@@ -25,4 +32,4 @@ app.use((err, req, res, next) => {
   });
 
   app.use('/api/user',userRoutes)
-  app.use('/api/auth',signup)
+  app.use('/api/auth',authRoutes);
