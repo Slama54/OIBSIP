@@ -15,7 +15,7 @@ import mongoose, { Schema } from "mongoose";
             required: true
         },
        
-    }
+    },{ timestamps: true }
  )
  const Pizza = mongoose.model('Size', sizeShema);
 

@@ -40,6 +40,11 @@ const pizzaSchema = new mongoose.Schema(
         ref:'Vegetables',
         required: true,
       },
+      meats: {
+        type: mongoose.Types.ObjectId,
+        ref:'Meats',
+        required: true,
+      },
       size:{
         type: mongoose.Types.ObjectId,
         ref:'Size',
