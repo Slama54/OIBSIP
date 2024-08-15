@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import FooterCom from "./components/Footer";
+import privateRoute from "./components/privateRoute";
 
 export default function App() {
   return (
@@ -17,7 +18,10 @@ export default function App() {
         <Route path="/about" element={<About/>}/>
         <Route path="/sign-in" element={<Signin/>}/>
         <Route path="/sign-up" element={<Signup/>}/>
-        <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route element={privateRoute}>
+            <Route path="/dashboard" element={<Dashboard/>}/>
+        </Route>
+        
 
       </Routes>
     
