@@ -23,7 +23,7 @@ const pizzaSchema = new mongoose.Schema(
     base: {
       type: mongoose.Types.ObjectId,
       ref:'Base',
-      required: true,
+      //required: true,
     },
     sauce: {
         type: mongoose.Types.ObjectId,
@@ -33,22 +33,22 @@ const pizzaSchema = new mongoose.Schema(
       cheese: {
         type: mongoose.Types.ObjectId,
         ref:'Chesse',
-        required: true,
+       // required: true,
       },
       vegetables: {
         type: mongoose.Types.ObjectId,
         ref:'Vegetables',
-        required: true,
+        //required: true,
       },
       meats: {
         type: mongoose.Types.ObjectId,
         ref:'Meats',
-        required: true,
+        //required: true,
       },
       size:{
         type: mongoose.Types.ObjectId,
         ref:'Size',
-        required: true,
+        //required: true,
       },
         
       
