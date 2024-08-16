@@ -22,7 +22,7 @@ export default function OAuth() {
             body:JSON.stringify({
                 name: resultsFromGoogle.user.displayName,
                 email: resultsFromGoogle.user.email,
-                GooglePhotoUrl: resultsFromGoogle.user.photoURL
+                GooglePhotoUrl: resultsFromGoogle.user.photoUrl
             })
         })
         const data = await res.json()

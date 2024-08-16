@@ -82,7 +82,7 @@ const {loading, error: errorMessage}=useSelector(state =>state.user)
                   <span className='pl-3'>Loading...</span>
                 </>
               ) : (
-                'Sign Up'
+                'Sign In'
               )}
             </Button>
             <OAuth/>
