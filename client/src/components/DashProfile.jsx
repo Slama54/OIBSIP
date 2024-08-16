@@ -2,6 +2,7 @@ import { Alert, Button, Modal, TextInput } from 'flowbite-react';
 import{HiOutlineExclamationCircle} from 'react-icons/hi'
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom'
 import {
   getDownloadURL,
   getStorage,
@@ -17,7 +18,7 @@ import { useDispatch } from 'react-redux';
 
 export default function DashProfile() {
   const dispatch = useDispatch();
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -244,9 +245,15 @@ export default function DashProfile() {
           defaultValue={currentUser.address} onChange={handleChange}/>
           <TextInput type='number' id='phone' placeholder='phone' defaultValue={currentUser.phone} onChange={handleChange}/>
         <TextInput type='password' id='password' placeholder='password' />
-        <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-          Update
+        <Button type='submit' gradientDuoTone='purpleToBlue' outline disabled={loading || imageFileUploading}>
+          {loading ? 'loading...' :'Update'}
         </Button>
+        {currentUser.isAdmin &&(
+          <Link to={'/create-pizza'}>
+          <Button type='button' className='w-full' gradientDuoTone='purpleToPink'>Add a pizza</Button>
+          </Link>
+          )}
+        
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span onClick={()=>setShowModal(true)} className='cursor-pointer'>Delete Account</span>

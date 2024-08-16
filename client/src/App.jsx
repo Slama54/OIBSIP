@@ -9,6 +9,8 @@ import FooterCom from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import Menu from "./pages/Menu";
 import Contact from "./pages/Contact";
+import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import CreatePizza from "./pages/CreatePizza";
 
 export default function App() {
   return (
@@ -25,6 +27,10 @@ export default function App() {
         
         <Route element={<PrivateRoute/>}>
               <Route path="/dashboard" element={<Dashboard/>}/>
+        </Route>
+        <Route element={<OnlyAdminPrivateRoute/>}> 
+
+            <Route path="/create-pizza" element={<CreatePizza/>}/>
         </Route>
         
 
