@@ -20,7 +20,7 @@ const pizzaSchema = new mongoose.Schema(
       default:
         'https://www.hostinger.com/tutorials/wp-content/uploads/sites/2/2021/09/how-to-write-a-blog-post.png',
     },
-    base: {
+    /* base: {
       type: mongoose.Types.ObjectId,
       ref:'Base',
       //required: true,
@@ -50,12 +50,28 @@ const pizzaSchema = new mongoose.Schema(
         ref:'Size',
         //required: true,
       },
-        
+         */
       
-      price:{
+      priceS:{
         type: Number,
+        
         required: true,
       },
+      priceM:{
+        type: Number,
+        
+        required: true,
+      },
+      priceL:{
+        type: Number,
+        
+        required: true,
+      },
+      /* price: {
+        type: Map, // Using Map for key-value structure
+        of: Number, // The value type is Number, representing the price for each size
+        default: { 'S': 10, 'M': 15, 'L': 20 }, // Example default prices for different sizes
+      }, */
 
     
     slug: {
