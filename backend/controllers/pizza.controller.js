@@ -19,10 +19,10 @@ export const create = async (req, res, next)=>{
     const newPizza = new Pizza({
         ...req.body,
         slug,
-        userId: req.user._id
+        userId: req.user.id
     })
     try {
-        const savePizza = await newPizza.save()
+        const savedPizza = await newPizza.save()
         res.status(201).json(savedPizza)
     } catch (error) {
         next(error);
