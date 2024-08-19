@@ -1,4 +1,4 @@
-import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
+import { Alert, Button, FileInput, TextInput } from 'flowbite-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import {  Label } from "flowbite-react";
@@ -12,13 +12,18 @@ import {
 import { app } from '../firebase';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import {useNavigate} from 'react-router-dom';
 
 
 export default function CreatePizza() {
+  const navigate = useNavigate();
   const [file, setFile]= useState(null)
   const [formData, setFormData] = useState({});
   const [imageUploadProgress,setImageUploadProgress] = useState(null)
   const [imageUploadError, setImageUploadError]= useState(null)
+  const [publishError, setPublishError]= useState(null)
+  console.log(formData);
+  
   const handleUpdloadImage = async () => {
     try {
       if (!file) {
@@ -55,10 +60,38 @@ export default function CreatePizza() {
       console.log(error);
     }
   };
+  const handleSubmit = async (e)=>{
+    e.preventDefault()
+    try {
+      const res = await fetch('/api/pizza/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError('Failed to create the pizza');
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/pizza/${data.slug}`);
+        return;
+      }
+      
+      
+    } catch (error) {
+      setPublishError('Failed to create the pizza');
+      
+    }
+
+  }
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-center text-3xl my-7 font-semibold'>Create a pizza</h1>
-      <form className='flex flex-col gap-4'>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-4 sm:flex-row justify-between'>
           <TextInput
             type='text'
@@ -66,34 +99,34 @@ export default function CreatePizza() {
             required
             id='title'
             className='flex-1'
+            onChange={(e)=>setFormData({...formData, title: e.target.value})}
           />
-          <Select>
-            <option value='uncategorized'>Select a pizza base</option>
-            <option value='javascript'>basic</option>
-            
-          </Select>
+          
         </div>
         <div className='flex flex-col gap-4 sm:flex-row justify-between'>
           <TextInput
             type='number'
             placeholder='price size S'
             required
-            id='price'
+            id='priceS'
             className='flex-1'
+            onChange={(e)=>setFormData({...formData, priceS: e.target.value})}
           />
           <TextInput
             type='number'
             placeholder='price size m'
             required
-            id='price'
+            id='priceM'
             className='flex-1'
+            onChange={(e)=>setFormData({...formData, priceM: e.target.value})}
           />
           <TextInput
             type='number'
             placeholder='price size L'
             required
-            id='price'
+            id='price L'
             className='flex-1'
+            onChange={(e)=>setFormData({...formData, priceL: e.target.value})}
           />
         </div>
         <div className='flex gap-4 items-center justify-between border-4 border-blue-200 border-dotted p-3'>
@@ -167,10 +200,14 @@ export default function CreatePizza() {
           placeholder='Write something...'
           className='h-72 mb-12'
           required
+          onChange={(value) =>
+            setFormData({...formData, content: value })
+          }
         />
         <Button type='submit' gradientDuoTone='purpleToPink'>
           Publish
         </Button>
+        {publishError && <Alert className='mt-5' color='failure'>{publishError}</Alert>}
       </form>
     </div>
   );
