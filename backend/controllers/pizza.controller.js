@@ -31,39 +31,46 @@ export const create = async (req, res, next)=>{
 
 }
 
-export const getpizzas = async(req, res , next )=>{
+export const getpizzas = async (req, res , next)=>{
     try {
-        const startIndex = parseInt(req.query.startIndex)||0;
-        const limit = parseInt(req.query.limit)||6;
-        const sortDirection = req.query.order ==='asc'?1:-1;
-        const pizzas = await Pizza.find({
-            ...Pizza(req.query.userId &&{userId:req.query.userId}),
-            ...(req.query.slug && {slug:req.query.slug}),
-            ...(req.query.postId && {_id:req.query.postId}),
-            ...(req.query.searchTerm && {
-                $or:[
-                  { title: { $regex: req.query.searchTerm,$options: 'i'}},
-                  { content: { $regex: req.query.searchTerm,$options: 'i'}},
-                ],
-              }),
-
-        }).sort({updateAt : sortDirection}).skip(startIndex).limit(limit)
-        const totalPizzas = await postMessage.countDocuments()
-        const now = new Date()
-        const oneMonthAgo = new Date(
-            now.getFullYear(),
-            now.getMonth()-1,
-            now.getDate()
-        )
-        const lastMonthPizzas = await Pizza.countDocuments({
-            createdAt: {$gte: oneMonthAgo}
-        })
-        res.json({
-            pizzas,
-            totalPizzas,
-            lastMonthPizzas
-        })
+      const startIndex = parseInt(req.query.startIndex)||0;
+      const limit = parseInt(req.query.limit)||9;
+      const sortDirection = req.query.order === 'asc' ? 1 :-1;
+      const pizzas = await Pizza.find({
+        ...(req.query.userId && {userId:req.query.userId}),
+        ...(req.query.priceS && {priceS:req.query.priceS}),
+        ...(req.query.priceM && {priceM:req.query.priceM}),
+        ...(req.query.priceL && {priceL:req.query.priceL}),
+        
+        ...(req.query.slug && {slug:req.query.slug}),
+        ...(req.query.pizzaId && {_id:req.query.pizzaId}),
+        ...(req.query.searchTerm && {
+          $or:[
+            { title: { $regex: req.query.searchTerm,$options: 'i'}},
+            { content: { $regex: req.query.searchTerm,$options: 'i'}},
+          ],
+        }),
+  
+      }).sort({updateAt : sortDirection}).skip(startIndex).limit(limit)
+        
+      const totalPizzas = await Pizza.countDocuments()
+      const now = new Date()
+      const oneMonthAgo =new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+      )
+      const lastMonthPizzas = await Pizza.countDocuments({
+        createdAt :{ $gte :oneMonthAgo},
+  
+      })
+       res.status(200).json({
+        pizzas,
+        totalPizzas,
+        lastMonthPizzas,
+       })
+  
     } catch (error) {
-        next(error)
+      next(error)
     }
-}
+  };
