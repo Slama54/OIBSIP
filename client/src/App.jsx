@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import CreatePizza from "./pages/CreatePizza";
 import UpdatePizza from "./pages/UpdatePizza";
+import PizzaPage from "./pages/PizzaPage";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/contact" element={<Contact/>}/>
         <Route path="/sign-in" element={<Signin/>}/>
         <Route path="/sign-up" element={<Signup/>}/>
+        <Route path="/pizza/:pizzaSlug" element={<PizzaPage/>}/>
         
         <Route element={<PrivateRoute/>}>
               <Route path="/dashboard" element={<Dashboard/>}/>
