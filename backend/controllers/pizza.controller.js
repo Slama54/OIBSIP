@@ -74,3 +74,16 @@ export const getpizzas = async (req, res , next)=>{
       next(error)
     }
   };
+  export const deletepizza = async(req,res, next)=>{
+    if(!req.user.isAdmin){
+        return next(errorHandler(403, 'Only admin users can delete pizza'));
+    }
+    try {
+        await Pizza.findByIdAndDelete(req.params.pizzaId)
+        res.status(200).json('Pizza has been deleted')
+    } catch (error) {
+        next(error);
+        
+    }
+
+  }
