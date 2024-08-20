@@ -31,7 +31,7 @@ export default function Header() {
   return (
     <Navbar className="border-b-2">
         <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
-           <img src="\logo\pizza-hut-logo-DDD88793B2-seeklogo 2.png" className="mr-3 h-6 sm:h-9" alt="" />
+           <img src="\logo\Red Beige Circle Illustrative Pizza Logo-Photoroom.png" className="mr-3 h-9 sm:h-14" alt="" />
         </Link>
         <form>
           <TextInput  type='text'

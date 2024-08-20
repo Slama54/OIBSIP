@@ -47,7 +47,7 @@ export default function Signup() {
         {/*left*/}
           <div className="flex-1">
           <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
-           <img src="\logo\pizza-hut-logo-DDD88793B2-seeklogo 2.png" className="mr-3 h-20 sm:h-36" alt="logo" />
+           <img src="\logo\Red Beige Circle Illustrative Pizza Logo-Photoroom.png" className="mr-3 h-20 sm:h-36" alt="logo" />
         </Link>
         <p className="text-sm mt-5">
           This is a demo projet you can sign up with your email 
