@@ -1,12 +1,15 @@
-import { Table, TableHead, TableHeadCell } from 'flowbite-react'
+import { Button, Table, TableHead, TableHeadCell } from 'flowbite-react'
 import { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
 
 export default function DashPizza() {
+
   const {currentUser}= useSelector((state)=> state.user)
   const[userPizzas, setUserPizzas]= useState([])
+  const [showMore, SetShowMore] = useState(true)
 console.log(userPizzas);
+
 
 useEffect(()=>{
   const fetchPizzas = async()=>{
@@ -15,6 +18,9 @@ useEffect(()=>{
       const data = await res.json()
       if(res.ok){
         setUserPizzas(data.pizzas)
+        if(data.pizzas.length <6){
+          SetShowMore(false)}
+  
       }
     } catch (error) {
       console.log(error.message);
@@ -27,7 +33,23 @@ useEffect(()=>{
     fetchPizzas();
   }
 },[currentUser._id])
-
+const handleShowMore = async ()=>{
+  const startIndex = userPizzas.length 
+  try {
+    const res = await fetch(`/api/pizza/getpizzas?userId=${currentUser._id}&startIndex=${startIndex}`)
+    const data = await res.json()
+    if(res.ok){
+      setUserPizzas([...userPizzas,...data.pizzas])
+      if(data.pizzas.length <6){
+        SetShowMore(false)}
+      
+    }
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
     
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
@@ -79,6 +101,9 @@ useEffect(()=>{
             </Table.Body>
           ))}
         </Table>
+        {showMore &&(
+          <Button onClick={handleShowMore} className='w-full text-teal-500 self-center text-sm py-7'>Show more</Button>
+        )}
         </>
       ):(<p>You have no pizza yet! </p>)}
     </div>
