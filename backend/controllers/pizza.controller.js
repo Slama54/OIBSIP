@@ -99,6 +99,7 @@ export const getpizzas = async (req, res , next)=>{
           priceS: req.body.priceS,
           priceM: req.body.priceM,
           priceL: req.body.priceL,
+          image: req.body.image,
         }
       },{new:true})
       res.status(200).json(updatePizza)
