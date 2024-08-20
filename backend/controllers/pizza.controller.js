@@ -34,7 +34,7 @@ export const create = async (req, res, next)=>{
 export const getpizzas = async (req, res , next)=>{
     try {
       const startIndex = parseInt(req.query.startIndex)||0;
-      const limit = parseInt(req.query.limit)||9;
+      const limit = parseInt(req.query.limit)||6;
       const sortDirection = req.query.order === 'asc' ? 1 :-1;
       const pizzas = await Pizza.find({
         ...(req.query.userId && {userId:req.query.userId}),
@@ -84,6 +84,26 @@ export const getpizzas = async (req, res , next)=>{
     } catch (error) {
         next(error);
         
+    }
+
+  }
+  export const updatepizza = async(req,res, next)=>{
+    if(!req.user.isAdmin){
+        return next(errorHandler(403, 'Only admin users can update pizza'));
+    }
+    try {
+      const updatePizza = await Pizza.findByIdAndUpdate(req.params.pizzaId, {
+        $set:{
+          title: req.body.title,
+          content: req.body.content,
+          priceS: req.body.priceS,
+          priceM: req.body.priceM,
+          priceL: req.body.priceL,
+        }
+      },{new:true})
+      res.status(200).json(updatePizza)
+    } catch (error) {
+      next(error)
     }
 
   }
