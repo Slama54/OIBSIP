@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.route.js';
 import pizzaRoutes from './routes/pizza.route.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import commentRoutes from './routes/comment.route.js';
 const app = express();      
 app.use(express.json())
   app.use(cookieParser());
@@ -38,3 +39,5 @@ app.use((err, req, res, next) => {
   app.use('/api/user',userRoutes)
   app.use('/api/auth',authRoutes);
   app.use('/api/pizza',pizzaRoutes)
+  app.use('/api/comment',commentRoutes)
+  

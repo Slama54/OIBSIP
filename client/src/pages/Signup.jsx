@@ -47,7 +47,7 @@ export default function Signup() {
         {/*left*/}
           <div className="flex-1">
           <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
-           <img src="\logo\Red Beige Circle Illustrative Pizza Logo-Photoroom.png" className="mr-3 h-20 sm:h-36" alt="logo" />
+           <img src="\logo\Red Beige Circle Illustrative Pizza Logo-Photoroom.png" className="mr-3 h-36 sm:h-60" alt="logo" />
         </Link>
         <p className="text-sm mt-5">
           This is a demo projet you can sign up with your email 
@@ -91,7 +91,7 @@ export default function Signup() {
                     <Spinner size='sm'/>
                     <span className="pl-3">Loading ...</span>
                   </>
-                  ) : 'Sign Up'}  ;
+                  ) : 'Sign Up'}  
                </Button>
                <OAuth/>
 

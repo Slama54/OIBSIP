@@ -1,6 +1,7 @@
 import { Label, Radio, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import CommentSection from "../components/CommentSection";
 
 
 export default function PizzaPage() {
@@ -39,15 +40,15 @@ export default function PizzaPage() {
     }
 
   return (
-    <main className="py-20">
+    <main className="py-20 p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
     <div className="max-w-screen-xl mx-auto">
       <div className="flex flex-wrap">
         <div className="w-full lg:w-1/2">
-          <div className="overflow-hidden">
+          <div className="overflow-hidden flex-1">
             <img src={pizza.image} alt="Pizza" className="w-full" />
           </div>
         </div>
-        <div className="w-full lg:w-1/2 p-12">
+        <div className="w-full flex-1 lg:w-1/2 p-12">
           <h3 className="text-2xl font-semibold text-gray-700 dark:text-gray-300  mb-4">Pizza Artisan</h3>
           <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-200 mb-6">{pizza.title}</h1>
           <div className="text-lg text-gray-600 dark:text-gray-300 mb-8" dangerouslySetInnerHTML={{__html: pizza && pizza.content}}>
@@ -80,6 +81,7 @@ export default function PizzaPage() {
         </div>
       </div>
     </div>
+    <CommentSection pizzaId={pizza._id}/>
   </main>
   )
 }
