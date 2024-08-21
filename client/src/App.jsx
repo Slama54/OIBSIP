@@ -13,10 +13,12 @@ import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import CreatePizza from "./pages/CreatePizza";
 import UpdatePizza from "./pages/UpdatePizza";
 import PizzaPage from "./pages/PizzaPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop/>
     <Header/>
     
       <Routes>
