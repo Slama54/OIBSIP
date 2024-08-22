@@ -18,3 +18,12 @@ export const createComment= async (req,res, next)=>{
         next(error)
     }
 }
+
+export const getPizzaComments = async (req, res, next) => {
+    try {
+        const comments = await Comment.find({pizzaId: req.params.pizzaId}).sort({createdAt: -1})
+        res.status(200).json(comments)
+    } catch (error) {
+        next(error)
+    }
+}

@@ -1,11 +1,13 @@
 import { Alert, Button, Textarea } from 'flowbite-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux'
 import { Link } from 'react-router-dom'
+import Comment from './Comment'
 export default function CommentSection({pizzaId}) {
     const {currentUser} = useSelector(state => state.user)
     const [comment, setComment] = useState('');
     const [commentError, setCommentError] = useState(null);
+    const [comments, setComments] = useState([]);
     const handleSubmit = async (e)=>{
         e.preventDefault();
         if(comment.length > 200) {
@@ -31,6 +33,7 @@ export default function CommentSection({pizzaId}) {
         if(res.ok){
             setComment('');
             setCommentError(null);
+            setComments([...comments,data])
         }
     } catch (error) {
         setCommentError(error.message)
@@ -39,6 +42,20 @@ export default function CommentSection({pizzaId}) {
     }
     
 }
+useEffect(()=>{
+  const getComments = async()=>{
+    try {
+      const res = await fetch (`/api/comment/getPizzaComments/${pizzaId}`)
+      if(res.ok){
+        const data = await res.json()
+        setComments(data)
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+  getComments()
+},[pizzaId])
 
 
   return (
@@ -84,6 +101,21 @@ export default function CommentSection({pizzaId}) {
         </form>
 
       )}
+      {comments.length === 0 ? (
+        <p className='text-gray-500 text-sm my-5'>No comments yet</p>
+      ):(
+      <>
+      <div className='text-sm flex my-5 items-center gap-1'>
+        <p>Comments</p>
+      <div className="border border-gray-400 py-1 px-2 rounded-sm">
+        <p>{comments.length}</p>
+        </div>
+
+
+      </div>
+      {comments.map(comment => <Comment key={comment._id} comment={comment}/>)}
+      </>
+    )}
     </div>
   )
 }
