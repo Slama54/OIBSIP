@@ -2,6 +2,7 @@ import { Label, Radio, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import CommentSection from "../components/CommentSection";
+import PizzaCard from "../components/PizzaCard";
 
 
 export default function PizzaPage() {
@@ -9,6 +10,7 @@ export default function PizzaPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
     const [pizza, setPizza] = useState(null)
+    const [recentPizza, setRecentPizza] = useState(null)
     console.log(pizza);
     
     useEffect(()=>{
@@ -35,6 +37,27 @@ export default function PizzaPage() {
         }
     fetchPizza()
     },[pizzaSlug])
+
+    useEffect(()=>{
+       const fetchRecentPizza = async ()=>{
+            try {
+                setLoading(true)
+                const res = await fetch(`/api/pizza/getpizzas?limit=3`)
+                const data = await res.json()
+                
+                if (res.ok) {
+                    setRecentPizza(data.pizzas)
+                    setLoading(false)
+                    setError(false)
+                }
+                
+            } catch (error) {
+                setError(true)
+                setLoading(false)
+            }
+        }
+        fetchRecentPizza()
+    },[])
     if(loading){
         return <div className="flex justify-center items-center min-h-screen"><Spinner className="4xl"/></div>
     }
@@ -82,6 +105,13 @@ export default function PizzaPage() {
       </div>
     </div>
     <CommentSection pizzaId={pizza._id}/>
+    <div className='flex flex-col justify-center items-center mb-5'>
+        <h1 className='text-2xl mt-5 font-bold'>Our Pizza 🍕</h1>
+        <div className='flex flex-wrap gap-5 mt-5 justify-center '>
+          {recentPizza &&
+            recentPizza.map((pizza) => <PizzaCard key={pizza._id} pizza={pizza} />)}
+        </div>
+      </div>
   </main>
   )
 }
