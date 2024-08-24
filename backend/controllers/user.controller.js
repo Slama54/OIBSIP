@@ -22,10 +22,11 @@ export const test = (req, res) => {
           }
         }
         if (req.body.phone) {
-          if (!req.body.phone.match(/^\+\d{2,3}\s\d{10}$/)) {
+          if (!req.body.phone == Number) {
             return next(errorHandler(400, 'Invalid phone number format'));
           }
         }
+        
         if (req.body.username) {
           if (req.body.username.length < 7 || req.body.username.length > 20) {
             return next(
@@ -143,3 +144,31 @@ export const getUser = async (req, res , next)=>{
     next(error)
   }
 }
+
+export const addToCart = async (req, res , next) => {
+  console.log(req.user.id,req.params);
+  
+  if (req.user.id !== req.params.userId) {
+    return next(errorHandler(403, 'You are not allowed to update this user'));
+  }
+  
+try {
+   
+    const userData = await User.findOne({_id: req.params.userId })
+    const cartData = userData.cartData || {};
+    console.log("user data",userData);
+    
+    
+    if(!cartData[req.body.itemId]) {
+        cartData[req.body.itemId] = 1}
+     else {
+        cartData[req.body.itemId] += 1;
+
+    }
+    await User.findByIdAndUpdate(req.params.userId, {cartData});
+    res.status(200).json(cartData)
+      console.log(userData);
+  } catch (error) {
+    next(error);
+  }  
+} 
