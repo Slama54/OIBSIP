@@ -34,7 +34,11 @@ const userShema = new mongoose.Schema({
     isAdmin:{
         type: Boolean,
         default: false,
-    }
-},{timestamps:true});
+    },
+    cartData:{
+        type:Object,
+        default:{}
+    },
+},{minimize:false},{timestamps:true});
 const User = mongoose.model('User', userShema);
 export default User
