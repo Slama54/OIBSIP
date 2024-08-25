@@ -149,12 +149,12 @@ export const addToCart = async (req, res , next) => {
   console.log(req.user.id,req.params);
   
   if (req.user.id !== req.params.userId) {
-    return next(errorHandler(403, 'You are not allowed to update this user'));
+    return next(errorHandler(403, 'You are not allowed to update this cart'));
   }
   
 try {
    
-    const userData = await User.findOne({_id: req.params.userId })
+    const userData = await User.findById(req.params.userId)
     const cartData = userData.cartData || {};
     console.log("user data",userData);
     
@@ -172,3 +172,30 @@ try {
     next(error);
   }  
 } 
+
+export const removeFromCart = async (req, res, next)=>{
+  console.log(req.user.id,req.params);
+  
+  if (req.user.id!== req.params.userId) {
+    return next(errorHandler(403, 'You are not allowed to delete this item from cart'));
+  }
+  try {
+   
+    const userData = await User.findById(req.params.userId)
+    const cartData = userData.cartData || {};
+    console.log("user data",userData);
+    
+    
+    if(cartData[req.body.itemId]>0) {
+
+      cartData[req.body.itemId] -=1
+    }
+     
+    await User.findByIdAndUpdate(req.params.userId, {cartData});
+    res.status(200).json(cartData)
+      console.log(userData);
+  } catch (error) {
+    next(error);
+  }  
+
+}

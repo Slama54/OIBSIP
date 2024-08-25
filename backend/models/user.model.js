@@ -39,6 +39,6 @@ const userShema = new mongoose.Schema({
         type:Object,
         default:{}
     },
-},{minimize:false},{timestamps:true});
+},{minimize:false,timestamps:true});
 const User = mongoose.model('User', userShema);
 export default User
