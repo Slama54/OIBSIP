@@ -199,3 +199,19 @@ export const removeFromCart = async (req, res, next)=>{
   }  
 
 }
+
+export const getCart = async (req, res , next) => {
+  console.log(req.user.id);
+  if (req.user.id!== req.params.userId) {
+    return next(errorHandler(403, 'You are not allowed to get cart'));
+  }
+  try {
+    const userData = await User.findById(req.params.userId)
+    const cartData = userData.cartData || {};
+    console.log("user data",userData);
+    res.status(200).json(cartData)
+      console.log(userData);
+  } catch (error) {
+    next(error);
+  }
+}
