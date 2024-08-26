@@ -1,33 +1,62 @@
 import { Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { RiCloseLargeLine } from "react-icons/ri";
 
 export default function CartPage() {
   const { currentUser } = useSelector((state) => state.user);
+  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [pizzaData, setPizzaData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
- 
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await fetch(`/api/user/${currentUser._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data); // Set user data after it's fetched
+        } else {
+          setError(true);
+        }
+      } catch (error) {
+        setError(true);
+      }
+    };
+    getUser();
+  }, [currentUser._id]);
 
   useEffect(() => {
     const fetchPizzaData = async () => {
+      if (!user.cartData || Object.keys(user.cartData).length === 0) {
+        setLoading(false);
+        return; // No cart data, stop here
+      }
+
       try {
-        const pizzaIds = Object.keys(currentUser.cartData);
+        const pizzaIds = Object.keys(user.cartData);
         const pizzas = [];
+        let calculatedTotalPrice = 0;
 
         for (const id of pizzaIds) {
           const res = await fetch(`/api/pizza/getpizzas?pizzaId=${id}`);
           const data = await res.json();
           if (res.ok) {
-            pizzas.push(data.pizzas[0]);
-            
+            const pizza = data.pizzas[0];
+            pizzas.push(pizza);
+
+            // Calculate total price: quantity * price
+            const quantity = user.cartData[pizza._id];
+            const pizzaPrice = pizza.priceS; // Assuming you're using small size price
+            calculatedTotalPrice += quantity * pizzaPrice;
           }
         }
 
         setPizzaData(pizzas);
+        setTotalPrice(calculatedTotalPrice); // Set total price state
         setLoading(false);
       } catch (error) {
         setError(true);
@@ -35,15 +64,16 @@ export default function CartPage() {
       }
     };
 
-    fetchPizzaData();
-  }, [currentUser.cartData]);
-  
+    if (user.cartData) {
+      fetchPizzaData();
+    }
+  }, [user.cartData]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (error) {
+  if (error || !pizzaData.length) {
     return <div>Error loading cart items.</div>;
   }
 
@@ -55,32 +85,37 @@ export default function CartPage() {
           <Table.HeadCell>Product Image</Table.HeadCell>
           <Table.HeadCell>Quantity</Table.HeadCell>
           <Table.HeadCell>Price</Table.HeadCell>
-          <Table.HeadCell/>
-           
+          <Table.HeadCell />
         </Table.Head>
         <Table.Body className="divide-y">
-        {pizzaData.map((pizza) => (
+          {pizzaData.map((pizza) => (
             <Table.Row key={pizza._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                 {pizza.title}
               </Table.Cell>
               <Table.Cell>
-                  <Link to={`/pizza/${pizza.slug}`}>
-                  <img src={pizza.image} alt={pizza.title} className='h-16 w-16 object-cover bg-gray-500' />
-                  </Link>
-                 
-                </Table.Cell>
-              <Table.Cell>{currentUser.cartData[pizza._id]}</Table.Cell>
-              <Table.Cell>{pizza.priceS} dt</Table.Cell> {/* Replace with correct size pricing */}
+                <Link to={`/pizza/${pizza.slug}`}>
+                  <img src={pizza.image} alt={pizza.title} className="h-16 w-16 object-cover bg-gray-500" />
+                </Link>
+              </Table.Cell>
+              <Table.Cell>{user.cartData[pizza._id]}</Table.Cell>
+              <Table.Cell>{pizza.priceS} dt</Table.Cell>
               <Table.Cell>
                 <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                <RiCloseLargeLine  className="text-xl"/>
+                  <RiCloseLargeLine className="text-xl" />
                 </a>
               </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
       </Table>
+
+      {/* Display total price */}
+      <div className="mt-4 text-right mx-4">
+        <p className="text-xl font-semibold">
+          Total Price: {totalPrice} dt
+        </p>
+      </div>
     </div>
   );
 }
