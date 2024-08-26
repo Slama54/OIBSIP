@@ -189,6 +189,10 @@ export const removeFromCart = async (req, res, next)=>{
     if(cartData[req.body.itemId]>0) {
 
       cartData[req.body.itemId] -=1
+          // Remove the item from cartData if its quantity is 0
+          if (cartData[req.body.itemId] === 0) {
+            delete cartData[req.body.itemId];
+          }
     }
      
     await User.findByIdAndUpdate(req.params.userId, {cartData});
