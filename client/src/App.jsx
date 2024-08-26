@@ -14,6 +14,7 @@ import CreatePizza from "./pages/CreatePizza";
 import UpdatePizza from "./pages/UpdatePizza";
 import PizzaPage from "./pages/PizzaPage";
 import ScrollToTop from "./components/ScrollToTop";
+import CartPage from "./pages/CartPage";
 
 export default function App() {
   return (
@@ -29,6 +30,8 @@ export default function App() {
         <Route path="/sign-in" element={<Signin/>}/>
         <Route path="/sign-up" element={<Signup/>}/>
         <Route path="/pizza/:pizzaSlug" element={<PizzaPage/>}/>
+        <Route path="/cart" element={<CartPage/>}/>
+
         
         <Route element={<PrivateRoute/>}>
               <Route path="/dashboard" element={<Dashboard/>}/>
