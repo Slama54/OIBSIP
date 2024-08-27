@@ -15,7 +15,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import {useNavigate} from 'react-router-dom';
 
 
-export default function CreateBase() {
+export default function CreateSauce() {
   const navigate = useNavigate();
   const [file, setFile]= useState(null)
   const [formData, setFormData] = useState({ available: true });
@@ -65,7 +65,7 @@ export default function CreateBase() {
   const handleSubmit = async (e)=>{
     e.preventDefault()
     try {
-      const res = await fetch('/api/base/createbase', {
+      const res = await fetch('/api/sauce/createsauce', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export default function CreateBase() {
       
       
     } catch (error) {
-      setPublishError('Failed to create the pizza base');
+      setPublishError('Failed to create the pizza');
       
     }
 
@@ -97,7 +97,7 @@ export default function CreateBase() {
         <div className='flex flex-col gap-4 sm:flex-row justify-between'>
           <TextInput
             type='text'
-            placeholder='base name'
+            placeholder='Sauce name'
             required
             id='name'
             className='flex-1'
@@ -108,7 +108,7 @@ export default function CreateBase() {
         <div className='flex flex-col gap-4 sm:flex-row justify-between'>
           <TextInput
             type='number'
-            placeholder='base price '
+            placeholder='Sauce price '
             required
             id='price'
             className='flex-1'
@@ -116,9 +116,9 @@ export default function CreateBase() {
           />
            <TextInput
             type='number'
-            placeholder='Base stock '
+            placeholder='Sauce stock '
             required
-            id='base'
+            id='stock'
             className='flex-1'
             onChange={(e)=>setFormData({...formData, stock: e.target.value})}
           />
@@ -198,7 +198,7 @@ export default function CreateBase() {
         }
        
         <Button type='submit' gradientDuoTone='purpleToPink'>
-          Create base
+          Create Sauce
         </Button>
         {publishError && <Alert className='mt-5' color='failure'>{publishError}</Alert>}
       </form>
