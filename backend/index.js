@@ -7,6 +7,9 @@ import pizzaRoutes from './routes/pizza.route.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import commentRoutes from './routes/comment.route.js';
+import baseRoutes from './routes/base.route.js';
+import orderRoutes from './routes/order.route.js'
+
 const app = express();      
 app.use(express.json())
   app.use(cookieParser());
@@ -40,4 +43,7 @@ app.use((err, req, res, next) => {
   app.use('/api/auth',authRoutes);
   app.use('/api/pizza',pizzaRoutes)
   app.use('/api/comment',commentRoutes)
+  app.use('/api/order',orderRoutes)
+  app.use('/api/base', baseRoutes)
+
   
