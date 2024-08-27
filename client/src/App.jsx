@@ -15,6 +15,15 @@ import UpdatePizza from "./pages/UpdatePizza";
 import PizzaPage from "./pages/PizzaPage";
 import ScrollToTop from "./components/ScrollToTop";
 import CartPage from "./pages/CartPage";
+import OrderPage from "./pages/OrderPage";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CreateBase from "./pages/CreateBase";
+import CreateSauce from "./pages/CreateSauce";
+import CreateCheese from "./pages/CreateCheese";
+import CreateMeet from "./pages/CreateMeet";
+import CreateVegetable from "./pages/CreateVegetable";
+const stripePromise = loadStripe('pk_test_51Pr5dvRv9JXiD6A0xaQIuMOPmMtHHa4XfHq5SYzOtDDEmJ4zd5EWnrKyhrFyjYzGTpKB9CyUG8rtrO3OLwjWQZRX00HFrunRSi');
 
 export default function App() {
   return (
@@ -35,10 +44,19 @@ export default function App() {
         
         <Route element={<PrivateRoute/>}>
               <Route path="/dashboard" element={<Dashboard/>}/>
+              <Route path="/order" element={<Elements stripe={stripePromise}>
+              <OrderPage />
+            </Elements>}/>
         </Route>
         <Route element={<OnlyAdminPrivateRoute/>}> 
 
             <Route path="/create-pizza" element={<CreatePizza/>}/>
+            <Route path="/create-base" element={<CreateBase/>}/>
+            <Route path="/create-sauce" element={<CreateSauce/>}/>
+            <Route path="/create-cheese" element={<CreateCheese/>}/>
+            <Route path="/create-meat" element={<CreateMeet/>}/>
+            <Route path="/create-vegetable" element={<CreateVegetable/>}/>
+            
             <Route path="/update-pizza/:pizzaId" element={<UpdatePizza/>}/>
 
         </Route>
