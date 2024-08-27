@@ -11,6 +11,7 @@ import baseRoutes from './routes/base.route.js';
 import cheeseRoutes from './routes/cheese.route.js';
  import sauceRoutes from './routes/sauce.route.js';
  import meatRoutes from './routes/meat.route.js'
+ import vegetableRoutes from './routes/vegetable.route.js'
 import orderRoutes from './routes/order.route.js'
 
 const app = express();      
@@ -51,6 +52,7 @@ app.use((err, req, res, next) => {
   app.use('/api/cheese', cheeseRoutes)
   app.use('/api/sauce', sauceRoutes)
   app.use('/api/meat', meatRoutes)
+  app.use('/api/vegetable', vegetableRoutes)
 
 
   

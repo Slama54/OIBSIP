@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
- const vegetablesShema = new mongoose.Schema(
+ const vegetablesSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -26,6 +26,6 @@ import mongoose, { Schema } from "mongoose";
 
     },{ timestamps: true }
  )
- const Pizza = mongoose.model('Vegetables', vegetablesShema);
+ const Vegetable = mongoose.model('Vegetable', vegetablesSchema);
 
-export default Vegetables;
+export default Vegetable;
