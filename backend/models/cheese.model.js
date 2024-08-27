@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
- const cheeseShema = new mongoose.Schema(
+ const cheeseSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -25,6 +25,6 @@ import mongoose, { Schema } from "mongoose";
           },
     },{ timestamps: true }
  )
- const Pizza = mongoose.model('Cheese', cheeseShema);
+ const Cheese = mongoose.model('Cheese', cheeseSchema);
 
 export default Cheese;

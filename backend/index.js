@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import commentRoutes from './routes/comment.route.js';
 import baseRoutes from './routes/base.route.js';
+import cheeseRoutes from './routes/cheese.route.js';
 import orderRoutes from './routes/order.route.js'
 
 const app = express();      
@@ -45,5 +46,7 @@ app.use((err, req, res, next) => {
   app.use('/api/comment',commentRoutes)
   app.use('/api/order',orderRoutes)
   app.use('/api/base', baseRoutes)
+  app.use('/api/cheese', cheeseRoutes)
+
 
   
