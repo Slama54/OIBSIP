@@ -23,6 +23,7 @@ import CreateSauce from "./pages/CreateSauce";
 import CreateCheese from "./pages/CreateCheese";
 import CreateMeet from "./pages/CreateMeet";
 import CreateVegetable from "./pages/CreateVegetable";
+import CreateCustomPizza from "./pages/CreateCustomPizza";
 const stripePromise = loadStripe('pk_test_51Pr5dvRv9JXiD6A0xaQIuMOPmMtHHa4XfHq5SYzOtDDEmJ4zd5EWnrKyhrFyjYzGTpKB9CyUG8rtrO3OLwjWQZRX00HFrunRSi');
 
 export default function App() {
@@ -40,6 +41,8 @@ export default function App() {
         <Route path="/sign-up" element={<Signup/>}/>
         <Route path="/pizza/:pizzaSlug" element={<PizzaPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
+        <Route path="/create-custom-pizza" element={<CreateCustomPizza/>}/>
+
 
         
         <Route element={<PrivateRoute/>}>
