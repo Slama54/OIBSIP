@@ -17,7 +17,7 @@ export default function DashPizza() {
 useEffect(()=>{
   const fetchPizzas = async()=>{
     try {
-      const res = await fetch(`/api/pizza/getpizzas?userId=${currentUser._id}`)
+      const res = await fetch(`/api/pizza/getpizzas`)
       const data = await res.json()
       if(res.ok){
         setUserPizzas(data.pizzas)
@@ -39,7 +39,7 @@ useEffect(()=>{
 const handleShowMore = async ()=>{
   const startIndex = userPizzas.length 
   try {
-    const res = await fetch(`/api/pizza/getpizzas?userId=${currentUser._id}&startIndex=${startIndex}`)
+    const res = await fetch(`/api/pizza/getpizzas?startIndex=${startIndex}`)
     const data = await res.json()
     if(res.ok){
       setUserPizzas([...userPizzas,...data.pizzas])
@@ -129,9 +129,14 @@ const handleDeletePizza = async()=>{
             </Table.Body>
           ))}
         </Table>
-        {showMore &&(
-          <Button onClick={handleShowMore} className='w-full text-teal-500 self-center text-sm py-7'>Show more</Button>
-        )}
+        {showMore && (
+            <button
+              onClick={handleShowMore}
+              className='w-full text-teal-500 self-center text-sm py-7'
+            >
+              Show more
+            </button>
+          )}
         </>
       ):(<p>You have no pizza yet! </p>)}
       <Modal show={showModal} onClick={()=>setShowModal(false)} popup size={'md'}>
