@@ -1,4 +1,4 @@
-import { Alert, Button, Modal, TextInput } from 'flowbite-react';
+import { Alert, Button, Dropdown, Modal, TextInput } from 'flowbite-react';
 import{HiOutlineExclamationCircle} from 'react-icons/hi'
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -244,9 +244,34 @@ export default function DashProfile() {
           {loading ? 'loading...' :'Update'}
         </Button>
         {currentUser.isAdmin &&(
-          <Link to={'/create-pizza'}>
-          <Button type='button' className='w-full' gradientDuoTone='purpleToPink'>Add a pizza</Button>
-          </Link>
+          <div className='flex items-center justify-center'>
+
+          <div className="">
+              <Link to={'/create-pizza'}>
+                  <Button type='button' className='w-full' gradientDuoTone='purpleToPink'>Add a pizza</Button>
+              </Link>
+          </div>
+            <div className="mx-4  ">
+              <Dropdown label="Ingredient"  gradientDuoTone='purpleToPink' dismissOnClick={false}>
+                  <Link to={'/create-base'}>
+                  <Dropdown.Item>Pizza Base</Dropdown.Item>
+                  </Link>
+                  <Link to={'/create-sauce'}>
+                  <Dropdown.Item>Pizza Sauce</Dropdown.Item>
+                  </Link>
+                  <Link to={'/create-cheese'}>
+                  <Dropdown.Item>Cheese</Dropdown.Item>
+                  </Link>
+                  <Link to={'/create-meat'}>
+                  <Dropdown.Item>Meat</Dropdown.Item>
+                  </Link>
+                  <Link to={'/create-vegetable'}>
+                  <Dropdown.Item>Vegetable</Dropdown.Item>
+                  </Link>
+              </Dropdown>
+            </div>
+
+          </div>
           )}
         
       </form>
