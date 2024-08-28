@@ -103,6 +103,11 @@ export default function Header() {
                          Contact
                     </Link>
                 </Navbar.Link>
+                <Navbar.Link active={path=="/create-custom-pizza"} as={"div"}>
+                    <Link to='/create-custom-pizza'>
+                         Custom pizza
+                    </Link>
+                </Navbar.Link>
                
             </Navbar.Collapse>
 
