@@ -4,6 +4,8 @@ import Button from '@mui/joy/Button';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
+import { Alert, Carousel, HR, TextInput } from 'flowbite-react';
+
 
 import { useEffect, useState } from 'react';
 
@@ -18,6 +20,8 @@ export default function CreateCustomPizza() {
     const [meat, setMeat] = useState([]);
     const [vegetables, setVegetables] = useState([]);
     const [vegetable, setVegetable] = useState([]);
+    const [formData, setFormData] = useState({});
+    const [publishError, setPublishError]= useState(null)
 
 
     useEffect(() => {
@@ -66,12 +70,50 @@ export default function CreateCustomPizza() {
         };
         fetchVegetable();
     }, []);
+
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault()
+        try {
+          const res = await fetch('/api/custompizza/createcustompizza', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            setPublishError('Failed to create the pizza');
+            return;
+          }
+          if (res.ok) {
+            setPublishError(null);
+            navigate(`/pizza/${data.slug}`);
+            return;
+          }
+          
+          
+        } catch (error) {
+          setPublishError('Failed to create the pizza');
+          
+        }
+    
+      }
+      console.log(formData);
+      
   
   
   return (
     <div className="">
+        <h1 className='text-center text-4xl font-bold my-3'>Create your custom Pizza </h1>
+        <HR className='border-1' />
+
+
+        
+        <form className='justify-center' onSubmit={handleSubmit}>
         <h2  className='text-center text-2xl font-bold my-3'>Pizza  Base</h2>
-  <div className=" mx-6 my-6 flex justify-center gap-4">
+  <div className="  flex-wrap mx-6 my-6 flex justify-center gap-4">
         
         {bases.map((base) =>(
             
@@ -100,7 +142,10 @@ export default function CreateCustomPizza() {
                 color="primary"
                 aria-label="Explore Bahamas Islands"
                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                onClick={()=>setBase(base._id)}
+               
+                onClick={() =>
+                    setFormData({...formData, base: base._id })
+                  }
               >
                 Add
               </Button>
@@ -111,8 +156,9 @@ export default function CreateCustomPizza() {
         ))}
         
     </div>
+    <HR/>
     <h2 className='text-center text-2xl font-bold my-3'>Pizza  Sauce</h2>
-  <div className=" mx-6 my-6 flex justify-center gap-4">
+  <div className=" mx-6 my-6 flex-wrap flex justify-center gap-4">
         
   {sauces.map((sauce) =>(
             
@@ -141,7 +187,9 @@ export default function CreateCustomPizza() {
                 color="primary"
                 aria-label="Explore Bahamas Islands"
                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                onClick={()=>setSauce(sauce._id)}
+                onClick={() =>
+                    setFormData({...formData, sauce: sauce._id })
+                  }
               >
                 Add
               </Button>
@@ -152,9 +200,9 @@ export default function CreateCustomPizza() {
         ))} 
         
     </div>
-
+    <HR/>
     <h2 className='text-center text-2xl font-bold my-3'>Pizza  Cheese</h2>
-  <div className=" mx-6 my-6 flex justify-center gap-4">
+  <div className=" mx-6 my-6 flex-wrap flex justify-center gap-4">
         
   {cheeses.map((cheese) =>(
             
@@ -183,7 +231,9 @@ export default function CreateCustomPizza() {
                 color="primary"
                 aria-label="Explore Bahamas Islands"
                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                onClick={()=>setCheese(cheese._id)}
+                onClick={() =>
+                    setFormData({...formData, cheese: cheese._id })
+                  }
               >
                 Add
               </Button>
@@ -194,8 +244,9 @@ export default function CreateCustomPizza() {
         ))} 
         
     </div>
+    <HR/>
     <h2 className='text-center text-2xl font-bold my-3'>Pizza  Meat</h2>
-  <div className=" mx-6 my-6 flex justify-center gap-4">
+  <div className=" mx-6 my-6 flex-wrap flex justify-center gap-4">
         
   {meats.map((meat) =>(
             
@@ -224,7 +275,9 @@ export default function CreateCustomPizza() {
                 color="primary"
                 aria-label="Explore Bahamas Islands"
                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                onClick={()=>setMeat(meat._id)}
+                onClick={() =>
+                    setFormData({...formData, meats: meat._id })
+                  }
               >
                 Add
               </Button>
@@ -235,8 +288,9 @@ export default function CreateCustomPizza() {
         ))} 
         
     </div>
+    <HR/>
     <h2 className='text-center text-2xl font-bold my-3'>Pizza  Vegetable</h2>
-  <div className=" mx-6 my-6 flex justify-center gap-4">
+  <div className=" mx-6 my-6 flex-wrap flex justify-center gap-4">
         
   {vegetables.map((vegetable) =>(
             
@@ -265,7 +319,9 @@ export default function CreateCustomPizza() {
                 color="primary"
                 aria-label="Explore Bahamas Islands"
                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                onClick={()=>setVegetable(vegetable._id)}
+                onClick={() =>
+                    setFormData({...formData, vegetables: vegetable._id })
+                  }
               >
                 Add
               </Button>
@@ -274,8 +330,32 @@ export default function CreateCustomPizza() {
         
 
         ))} 
+       
         
     </div>
+    <HR/>
+    <div className='flex items-center justify-center'>
+    <TextInput
+            type='text'
+            placeholder='Title'
+            required
+            id='title'
+            className='justify-center self-center w-60'
+            onChange={(e)=>setFormData({...formData, title: e.target.value})}
+          />
+        
+            <div className="mx-4 mb-3 my-1 ">
+            <button className=" mx-auto relative  self-center inline-flex items-center justify-center p-0.5  me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+<span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+Pink to orange
+</span>
+</button>
+            </div>
+
+          </div>
+    </form>
+    {publishError && <Alert className='mt-5' color='failure'>{publishError}</Alert>}
+
     </div>
  
   )
