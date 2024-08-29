@@ -7,7 +7,7 @@ import Meats from '../models/meats.model.js';
 
 export const createCustomPizza = async (req, res) => {
   try {
-    const { userId, title, base, sauce, cheese, vegetables, meats, slug } = req.body;
+    const { userId, title, base, sauce, cheese, vegetables, meats } = req.body;
 
     // Validate if the base and sauce exist, and calculate their price
     const foundBase = await Base.findById(base);
@@ -19,6 +19,11 @@ export const createCustomPizza = async (req, res) => {
     if (!foundBase || !foundSauce) {
       return res.status(400).json({ message: 'Base or Sauce is invalid' });
     }
+    const slug = req.body.title
+    .split(' ')
+    .join('-')
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9-]/g, '');
 
     // Calculate total price based on the selected ingredients
     let totalPrice = foundBase.price + foundSauce.price;
@@ -26,17 +31,19 @@ export const createCustomPizza = async (req, res) => {
     if (foundCheese) totalPrice += foundCheese.price;
     if (foundVegetables) totalPrice += foundVegetables.price;
     if (foundMeats) totalPrice += foundMeats.price;
+ 
+        
 
     // Create the custom pizza after validation and price calculation
     const customPizza = new CustomPizza({
-      userId,
+      userId :req.user.id,
       title,
       base,
       sauce,
       cheese,
       vegetables,
       meats,
-      price: totalPrice,  // Set the calculated price
+      price: totalPrice,  
       slug,
     });
 
