@@ -5,9 +5,35 @@ import Shop from '../homeComponents/Shop'
 import Menu from '../homeComponents/Menu'
 import Clinetsh from '../homeComponents/Clinetsh'
 import Prices from '../homeComponents/Prices'
+import { useEffect, useState } from 'react'
+import PizzaCard from '../components/PizzaCard'
 
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  const [error, setError] = useState(false);
+
+  const [recentPizza, setRecentPizza] = useState(null);
+  useEffect(() => {
+    const fetchRecentPizza = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/pizza/getpizzas?limit=6`);
+        const data = await res.json();
+
+        if (res.ok) {
+          setRecentPizza(data.pizzas);
+          setLoading(false);
+          setError(false);
+        }
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+    };
+    fetchRecentPizza();
+  }, []);
   return (
     <div>
       
@@ -25,7 +51,12 @@ export default function Home() {
     <Shop/>
     <Menu/>
     <Clinetsh/>
-    <Prices/>
+    <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-2xl mt-5 font-bold">Our Pizza 🍕</h1>
+        <div className="flex flex-wrap  mt-5 justify-center">
+          {recentPizza && recentPizza.map((pizza) => <PizzaCard key={pizza._id} pizza={pizza} />)}
+        </div>
+      </div>
 
     </div>
   )
