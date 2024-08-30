@@ -1,7 +1,7 @@
-import { Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link,useNavigate  } from 'react-router-dom';
 import { RiCloseLargeLine } from "react-icons/ri";
 
 export default function CartPage() {
@@ -11,6 +11,7 @@ export default function CartPage() {
   const [error, setError] = useState(false);
   const [pizzaData, setPizzaData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -63,11 +64,17 @@ export default function CartPage() {
         setLoading(false);
       }
     };
+    
+  
 
     if (user.cartData) {
       fetchPizzaData();
     }
   }, [user.cartData]);
+  const handleOrder = () => {
+    // Navigate to order page with the total price
+    navigate('/order', { state: { totalPrice } });
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -111,10 +118,13 @@ export default function CartPage() {
       </Table>
 
       {/* Display total price */}
-      <div className="mt-4 text-right mx-4">
-        <p className="text-xl font-semibold">
+      <div className="mt-4 grid justify-end mx-4">
+        <Button 
+         onClick={handleOrder}
+        color={"red-500"} className="mt-4 inline-block bg-red-500    text-white font-bold  rounded-full text-sm hover:bg-red-600 transition duration-300"
+        >
           Total Price: {totalPrice} dt
-        </p>
+        </Button>
       </div>
     </div>
   );
